@@ -5,10 +5,6 @@ defmodule Greedy.Application do
 
   use Application
 
-  gen_consumer_impl = ExampleGenConsumer
-  consumer_group_name = "example_group"
-  topic_names = ["example_topic"]
-
   def start(_type, _args) do
     import Supervisor.Spec
 
