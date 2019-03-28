@@ -1,4 +1,6 @@
 defmodule Greedy.Schema do
+  @url 'http://10.0.100.250'
+  @port '8081'
 
   def all do
     schema_names()
@@ -7,7 +9,7 @@ defmodule Greedy.Schema do
   end
 
   def load(name) do
-    {:ok, content} = request('http://10.0.100.250:8081/subjects/#{name}/versions/latest')
+    {:ok, content} = request('/subjects/#{name}/versions/latest')
 
     with {:ok, %{"schema" => schema} = raw} <- Poison.decode(content),
          {:ok, schema} <- Poison.decode(schema), do: raw |> Map.put("schema", schema)
@@ -20,10 +22,11 @@ defmodule Greedy.Schema do
   end
 
   def request_all do
-    request('http://10.0.100.250:8081/subjects/')
+    request('/subjects/')
   end
 
   def request(path) do
-    with {:ok, {{'HTTP/1.1', 200, 'OK'}, _, content}} <- :httpc.request(:get, {path, []}, [], []), do: {:ok, content}
+    url = '#{@url}:#{@port}#{path}'
+    with {:ok, {{'HTTP/1.1', 200, 'OK'}, _, content}} <- :httpc.request(:get, {url, []}, [], []), do: {:ok, content}
   end
 end
