@@ -33,11 +33,8 @@ defmodule Greedy do
   def remove_bits(<<0, 0, 0, 0, 13>> <> rest), do: rest
 
   def parse_value(value) do
-    {:ok, value} =
-      schema()
-      |> AvroEx.decode(value)
-
-    value
+    with {:ok, value} <- AvroEx.decode(schema(), value),
+         do: value
   end
 
   def parse_metadata(%{"metadata" => metadata_json} = value) do
