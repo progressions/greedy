@@ -11,8 +11,7 @@ defmodule Greedy.Schema do
   def load(name) do
     with {:ok, content} = request('/subjects/#{name}/versions/latest'),
          {:ok, %{"schema" => schema} = raw} <- Poison.decode(content),
-         {:ok, schema} <- Poison.decode(schema),
-         do: raw |> Map.put("schema", schema)
+         do: raw
   end
 
   def schema_names do

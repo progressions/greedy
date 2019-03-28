@@ -41,13 +41,7 @@ defmodule Greedy do
   end
 
   def schema do
-    %{
-      "subject" => "fedora.user-value",
-      "version" => 1,
-      "id" => 13,
-      "schema" =>
-        "{\"type\":\"record\",\"name\":\"event\",\"namespace\":\"eventable.testing\",\"fields\":[{\"name\":\"source\",\"type\":\"string\"},{\"name\":\"noun\",\"type\":[\"string\",\"null\"]},{\"name\":\"verb\",\"type\":[\"string\",\"null\"]},{\"name\":\"noun_id\",\"type\":[\"string\",\"int\",\"null\"]},{\"name\":\"metadata\",\"type\":[\"string\",\"null\"]},{\"name\":\"received_at\",\"type\":\"string\"},{\"name\":\"created_at\",\"type\":[\"long\",\"int\",\"float\",\"double\",\"string\",\"null\"]}],\"__fastavro_parsed\":true}"
-    }
+    Greedy.Schema.load('fedora.user-value')
     |> parse_schema()
   end
 
