@@ -4,15 +4,15 @@ defmodule Greedy.Schema do
 
   def all do
     schema_names()
-    |> Enum.filter(& &1 =~ ~r/fedora/)
+    |> Enum.filter(&(&1 =~ ~r/fedora/))
     |> Enum.map(&load/1)
   end
 
   def load(name) do
-    {:ok, content} = request('/subjects/#{name}/versions/latest')
-
-    with {:ok, %{"schema" => schema} = raw} <- Poison.decode(content),
-         {:ok, schema} <- Poison.decode(schema), do: raw |> Map.put("schema", schema)
+    with {:ok, content} = request('/subjects/#{name}/versions/latest'),
+         {:ok, %{"schema" => schema} = raw} <- Poison.decode(content),
+         {:ok, schema} <- Poison.decode(schema),
+         do: raw |> Map.put("schema", schema)
   end
 
   def schema_names do
@@ -27,6 +27,8 @@ defmodule Greedy.Schema do
 
   def request(path) do
     url = '#{@url}:#{@port}#{path}'
-    with {:ok, {{'HTTP/1.1', 200, 'OK'}, _, content}} <- :httpc.request(:get, {url, []}, [], []), do: {:ok, content}
+
+    with {:ok, {{'HTTP/1.1', 200, 'OK'}, _, content}} <- :httpc.request(:get, {url, []}, [], []),
+         do: {:ok, content}
   end
 end
