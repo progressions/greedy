@@ -1,20 +1,7 @@
 defmodule Greedy do
   @moduledoc """
-  Documentation for Greedy.
+  Sandbox for experimenting with Kafka.
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Greedy.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 
   def latest do
     Greedy.fetch() |> Greedy.messages() |> Greedy.values()
