@@ -19,8 +19,8 @@ defmodule Greedy.Application do
       commit_interval: 1_000
     ]
 
-    gen_consumer_impl = ExampleGenConsumer
-    consumer_group_name = "example_group"
+    gen_consumer_impl = Greedy.Consumer
+    consumer_group_name = "kafka_ex"
 
     topic_names = [
       "fedora.user",
@@ -36,13 +36,14 @@ defmodule Greedy.Application do
       "fedora.school"
     ]
 
-    children = [
+    zchildren = [
       # ... other children
       supervisor(
         KafkaEx.ConsumerGroup,
         [gen_consumer_impl, consumer_group_name, topic_names, consumer_group_opts]
       )
     ]
+    children = []
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
