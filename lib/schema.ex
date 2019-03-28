@@ -1,4 +1,8 @@
 defmodule Greedy.Schema do
+  @moduledoc """
+  Fetch and store schemas from kafka.
+  """
+
   use Agent
 
   @url 'http://10.0.100.250'
