@@ -9,6 +9,12 @@ defmodule Greedy.Consumer do
   def handle_message_set(message_set, state) do
     for %Message{value: message} <- message_set do
       Logger.debug(fn -> "message: " <> inspect(message) end)
+
+      value = message
+              |> Greedy.remove_bits()
+              |> Greedy.parse_value()
+
+      Logger.debug(fn -> "value: " <> inspect(value) end)
     end
 
     {:async_commit, state}
