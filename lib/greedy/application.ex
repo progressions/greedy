@@ -43,6 +43,7 @@ defmodule Greedy.Application do
         [gen_consumer_impl, consumer_group_name, topic_names, consumer_group_opts]
       )
     ]
+
     children = []
 
     Supervisor.start_link(children, strategy: :one_for_one)

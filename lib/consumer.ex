@@ -10,9 +10,11 @@ defmodule Greedy.Consumer do
     for %Message{value: message} <- message_set do
       Logger.debug(fn -> "message: " <> inspect(message) end)
 
-      value = message
-              |> Greedy.remove_bits()
-              |> Greedy.parse_value()
+      value =
+        message
+        |> Greedy.remove_bits()
+        |> Greedy.parse_value()
+        |> Greedy.parse_metadata()
 
       Logger.debug(fn -> "value: " <> inspect(value) end)
     end
