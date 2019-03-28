@@ -34,6 +34,9 @@ defmodule Greedy do
     |> Enum.map(&parse_metadata/1)
   end
 
+  # I believe these bits identify the schema. The last bit is 13, which is
+  # the id of the "fedora.user" schema.
+  #
   def remove_bits(<<0, 0, 0, 0, 13>> <> rest), do: rest
 
   def parse_value(value) do
