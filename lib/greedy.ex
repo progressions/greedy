@@ -29,8 +29,8 @@ defmodule Greedy do
   def values(messages) do
     messages
     |> Enum.map(& &1.value)
-    |> Enum.map(& remove_bits(&1))
-    |> Enum.map(& parse_message(&1))
+    |> Enum.map(&remove_bits/1)
+    |> Enum.map(&parse_message/1)
   end
 
   def remove_bits(<<0, 0, 0, 0, 13>> <> rest), do: rest
