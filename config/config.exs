@@ -78,11 +78,6 @@ config :kafka_ex,
   use_ssl: false,
   # see SSL OPTION DESCRIPTIONS - CLIENT SIDE at http://erlang.org/doc/man/ssl.html
   # for supported options
-  ssl_options: [
-    cacertfile: File.cwd() <> "/ssl/ca-cert",
-    certfile: File.cwd() <> "/ssl/cert.pem",
-    keyfile: File.cwd() <> "/ssl/key.pem"
-  ],
   # set this to the version of the kafka broker that you are using
   # include only major.minor.patch versions.  must be at least 0.8.0
   kafka_version: "0.10.1"
