@@ -44,7 +44,7 @@ defmodule Greedy do
   end
 
   def schema do
-    Greedy.Schema.load('fedora.user-value')
+    Greedy.Schema.get(:schemas, "fedora.user-value")
     |> parse_schema()
   end
 

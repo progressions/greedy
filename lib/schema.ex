@@ -1,6 +1,24 @@
 defmodule Greedy.Schema do
+  use Agent
+
   @url 'http://10.0.100.250'
   @port '8081'
+
+  def start_link(_opts) do
+    {:ok, pid} = Agent.start_link(fn -> %{} end, name: :schemas)
+
+    all() |> Enum.map(& put(pid, &1["subject"], &1))
+
+    {:ok, pid}
+  end
+
+  def get(pid, name) do
+    Agent.get(pid, &Map.get(&1, name))
+  end
+
+  def put(pid, name, value) do
+    Agent.update(pid, &Map.put(&1, name, value))
+  end
 
   @doc """
   Fetch all the schemas for topics matching 'fedora'.
@@ -13,7 +31,7 @@ defmodule Greedy.Schema do
 
   def load(name) do
     with {:ok, content} = request('/subjects/#{name}/versions/latest'),
-         {:ok, %{"schema" => schema} = raw} <- Poison.decode(content),
+         {:ok, %{"schema" => _schema} = raw} <- Poison.decode(content),
          do: raw
   end
 
