@@ -5,16 +5,45 @@ defmodule Greedy.Application do
 
   use Application
 
+  gen_consumer_impl = ExampleGenConsumer
+  consumer_group_name = "example_group"
+  topic_names = ["example_topic"]
+
   def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
-      # Starts a worker by calling: Greedy.Worker.start_link(arg)
-      # {Greedy.Worker, arg}
+    import Supervisor.Spec
+
+    consumer_group_opts = [
+      # setting for the ConsumerGroup
+      heartbeat_interval: 1_000,
+      # this setting will be forwarded to the GenConsumer
+      commit_interval: 1_000
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Greedy.Supervisor]
-    Supervisor.start_link(children, opts)
+    gen_consumer_impl = ExampleGenConsumer
+    consumer_group_name = "example_group"
+
+    topic_names = [
+      "fedora.user",
+      "fedora-client-secure",
+      "fedora-client",
+      "fedora.school_subscription",
+      "fedora-client.user",
+      "fedora.School",
+      "fedora.school_plan_subscription_change",
+      "fedora-client-secure.School",
+      "fedora-client.School",
+      "fedora_client.School",
+      "fedora.school"
+    ]
+
+    children = [
+      # ... other children
+      supervisor(
+        KafkaEx.ConsumerGroup,
+        [gen_consumer_impl, consumer_group_name, topic_names, consumer_group_opts]
+      )
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
