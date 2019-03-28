@@ -2,6 +2,9 @@ defmodule Greedy.Schema do
   @url 'http://10.0.100.250'
   @port '8081'
 
+  @doc """
+  Fetch all the schemas for topics matching 'fedora'.
+  """
   def all do
     schema_names()
     |> Enum.filter(&(&1 =~ ~r/fedora/))

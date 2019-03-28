@@ -32,6 +32,7 @@ defmodule Greedy.Application do
       "fedora.school"
     ]
 
+    # I turned this off because we don't really need it right now.
     _children = [
       # ... other children
       supervisor(

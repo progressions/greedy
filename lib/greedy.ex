@@ -3,6 +3,12 @@ defmodule Greedy do
   Sandbox for experimenting with Kafka.
   """
 
+  @doc """
+  Fetch a bunch of records from the "fedora.user" topic in Kafka.
+
+  Fetches records and parses the Avros-encoded values and then parses the
+  JSON metadata within.
+  """
   def latest do
     Greedy.fetch() |> Greedy.messages() |> Greedy.values()
   end
