@@ -12,7 +12,7 @@ defmodule Greedy do
   def latest(topic \\ "fedora.user") do
     Greedy.fetch(topic)
     |> Greedy.messages()
-    |> Greedy.values()
+    |> Greedy.values(topic)
   end
 
   def fetch(topic \\ "fedora.user") do
@@ -21,11 +21,11 @@ defmodule Greedy do
 
   def messages([%{partitions: [%{message_set: messages}]}]), do: messages
 
-  def values(messages) do
+  def values(messages, topic) do
     messages
     |> Enum.map(& &1.value)
     |> Enum.map(&remove_bits/1)
-    |> Enum.map(&parse_value/1)
+    |> Enum.map(&parse_encoded_value(&1, topic))
     |> Enum.map(&parse_metadata/1)
   end
 
@@ -35,8 +35,8 @@ defmodule Greedy do
   """
   def remove_bits(<<0, 0, 0, 0, 13>> <> rest), do: rest
 
-  def parse_value(value) do
-    with {:ok, value} <- AvroEx.decode(schema(), value),
+  def parse_encoded_value(value, topic) do
+    with {:ok, value} <- AvroEx.decode(schema("#{topic}-value"), value),
          do: value
   end
 
@@ -47,8 +47,8 @@ defmodule Greedy do
     |> Map.put("metadata", metadata)
   end
 
-  def schema do
-    Greedy.Schema.get(:schemas, "fedora.user-value")
+  def schema(name) do
+    Greedy.Schema.get(:schemas, name)
     |> parse_schema()
   end
 
