@@ -1,6 +1,22 @@
 defmodule Greedy.Schema do
   @moduledoc """
   Fetch and store schemas from kafka.
+
+  This approach uses an Agent, which is the GenServer abstraction designed
+  for storing state.
+
+  On startup, it queries our Zookeeper instance at the url given in the
+  @url property for the list of topics matching the string 'teachable',
+  then it queries each topic for its schema
+
+  It then stores each topic's schema in a Map, with the key being the
+  topic's name.
+
+  If the topic name is "teachable.hook", then the schema name would be
+  "teachable.hook-values".
+
+  The schemas are now stored and available to fetch by name.
+
   """
 
   use Agent
@@ -25,11 +41,11 @@ defmodule Greedy.Schema do
   end
 
   @doc """
-  Fetch all the schemas for topics matching 'fedora'.
+  Fetch all the schemas for topics matching 'teachable'.
   """
   def all do
     names()
-    |> Enum.filter(&(&1 =~ ~r/fedora/))
+    |> Enum.filter(&(&1 =~ ~r/teachable/))
     |> Enum.map(&load/1)
   end
 
