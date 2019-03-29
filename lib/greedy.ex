@@ -29,9 +29,10 @@ defmodule Greedy do
     |> Enum.map(&parse_metadata/1)
   end
 
-  # I believe these bits identify the schema. The last bit is 13, which is
-  # the id of the "fedora.user" schema.
-  #
+  @doc """
+  I believe these bits identify the schema. The last bit is 13, which is
+  the id of the "fedora.user" schema.
+  """
   def remove_bits(<<0, 0, 0, 0, 13>> <> rest), do: rest
 
   def parse_value(value) do
@@ -42,7 +43,8 @@ defmodule Greedy do
   def parse_metadata(%{"metadata" => metadata_json} = value) do
     {:ok, metadata} = Poison.decode(metadata_json)
 
-    value |> Map.put("metadata", metadata)
+    value
+    |> Map.put("metadata", metadata)
   end
 
   def schema do
