@@ -9,8 +9,8 @@ defmodule Greedy do
   Fetches records and parses the Avros-encoded values and then parses the
   JSON metadata within.
   """
-  def latest do
-    Greedy.fetch()
+  def latest(topic \\ "fedora.user") do
+    Greedy.fetch(topic)
     |> Greedy.messages()
     |> Greedy.values()
   end
