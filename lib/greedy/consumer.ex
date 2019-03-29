@@ -12,8 +12,8 @@ defmodule Greedy.Consumer do
 
       value =
         message
-        |> Greedy.remove_bits()
-        |> Greedy.parse_value()
+        |> Greedy.parse_schema_id()
+        |> Greedy.parse_encoded_value()
         |> Greedy.parse_metadata()
 
       Logger.debug(fn -> "value: " <> inspect(value) end)
