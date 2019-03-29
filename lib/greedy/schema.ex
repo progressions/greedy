@@ -11,7 +11,7 @@ defmodule Greedy.Schema do
   def start_link(_opts) do
     {:ok, pid} = Agent.start_link(fn -> %{} end, name: :schemas)
 
-    all() |> Enum.map(& put(pid, &1["subject"], &1))
+    all() |> Enum.map(&put(pid, &1["subject"], &1))
 
     {:ok, pid}
   end

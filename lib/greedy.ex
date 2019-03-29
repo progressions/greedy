@@ -10,7 +10,9 @@ defmodule Greedy do
   JSON metadata within.
   """
   def latest do
-    Greedy.fetch() |> Greedy.messages() |> Greedy.values()
+    Greedy.fetch()
+    |> Greedy.messages()
+    |> Greedy.values()
   end
 
   def fetch(topic \\ "fedora.user") do
