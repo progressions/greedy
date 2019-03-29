@@ -28,7 +28,7 @@ defmodule Greedy.Schema do
   Fetch all the schemas for topics matching 'fedora'.
   """
   def all do
-    schema_names()
+    names()
     |> Enum.filter(&(&1 =~ ~r/fedora/))
     |> Enum.map(&load/1)
   end
@@ -39,7 +39,7 @@ defmodule Greedy.Schema do
          do: raw
   end
 
-  def schema_names do
+  def names do
     with {:ok, content} <- request_all(),
          {:ok, values} <- Poison.decode(content),
          do: values
