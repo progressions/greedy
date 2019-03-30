@@ -47,8 +47,8 @@ defmodule Greedy do
   Once the message is encoded, the value's `metadata` field is still
   encoded as JSON, so we decode that field as well.
   """
-  def decode(message, topic) do
-    message.value
+  def decode(%{value: value}, topic) do
+    value
     |> parse_schema_id()
     |> parse_encoded_value(topic)
     |> parse_metadata()
