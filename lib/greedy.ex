@@ -82,9 +82,10 @@ defmodule Greedy do
   work.
   """
   def parse_encoded_value({:unencoded, value}, topic), do: value
+
   def parse_encoded_value({_id, value}, topic) do
     with {:ok, schema} <- schema("#{topic}-value"),
-        {:ok, value} <- AvroEx.decode(schema, value),
+         {:ok, value} <- AvroEx.decode(schema, value),
          do: value
   end
 
@@ -94,6 +95,7 @@ defmodule Greedy do
     value
     |> Map.put("metadata", metadata)
   end
+
   def parse_metadata(value), do: value
 
   def schema(name) do

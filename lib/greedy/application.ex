@@ -42,9 +42,17 @@ defmodule Greedy.Application do
     ]
 
     children = [
-      Greedy.SchemaSupervisor
+      Greedy.SchemaSupervisor,
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)
+
+    children = [
+      worker(A, [0]),
+      worker(B, [2]),
+      worker(C, []),
+    ]
+
+    Supervisor.start_link(children, strategy: :rest_for_one)
   end
 end
