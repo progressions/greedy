@@ -37,7 +37,7 @@ defmodule Greedy do
   """
   def values(messages, topic) do
     messages
-    |> Enum.map(&decode_value(&1, topic))
+    |> Enum.map(&decode(&1, topic))
   end
 
   @doc """
@@ -47,7 +47,7 @@ defmodule Greedy do
   Once the message is encoded, the value's `metadata` field is still
   encoded as JSON, so we decode that field as well.
   """
-  def decode_value(message, topic) do
+  def decode(message, topic) do
     message.value
     |> parse_schema_id()
     |> parse_encoded_value(topic)
