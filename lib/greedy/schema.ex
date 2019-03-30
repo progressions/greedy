@@ -71,6 +71,7 @@ defmodule Greedy.Schema do
     with {:ok, content} <- request_all(),
          {:ok, values} <- Poison.decode(content),
          do: values
+
   end
 
   @doc """

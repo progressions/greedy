@@ -65,6 +65,7 @@ defmodule Greedy do
   the ID out of this value and use that to fetch the schema.
   """
   def parse_schema_id(<<0, 0, 0, 0, id>> <> rest), do: {id, rest}
+  def parse_schema_id(value), do: {:unencoded, value}
 
   @doc """
   Parse the Avro-encoded value we get from Kafka.
@@ -80,8 +81,10 @@ defmodule Greedy do
   If those bytes haven't been removed, this function won't
   work.
   """
+  def parse_encoded_value({:unencoded, value}, topic), do: value
   def parse_encoded_value({_id, value}, topic) do
-    with {:ok, value} <- AvroEx.decode(schema("#{topic}-value"), value),
+    with {:ok, schema} <- schema("#{topic}-value"),
+        {:ok, value} <- AvroEx.decode(schema, value),
          do: value
   end
 
@@ -91,6 +94,7 @@ defmodule Greedy do
     value
     |> Map.put("metadata", metadata)
   end
+  def parse_metadata(value), do: value
 
   def schema(name) do
     Greedy.Schema.get(:schemas, name)
@@ -98,6 +102,6 @@ defmodule Greedy do
   end
 
   def parse_schema(%{"schema" => schema_json}) do
-    AvroEx.parse_schema!(schema_json)
+    AvroEx.parse_schema(schema_json)
   end
 end
