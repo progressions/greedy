@@ -63,6 +63,9 @@ defmodule Greedy do
 
   I think the ideal approach in the long run might be to get
   the ID out of this value and use that to fetch the schema.
+
+  If a message doesn't match this pattern, then we conclude it is
+  unencoded and just pass the message through.
   """
   def parse_schema_id(<<0, 0, 0, 0, id>> <> rest), do: {id, rest}
   def parse_schema_id(value), do: {:unencoded, value}
