@@ -32,6 +32,7 @@ defmodule Greedy.MixProject do
       {:kafka_ex, "~> 0.9.0"},
       {:avro_ex, "~> 0.1.0-beta.0"},
       {:ex_doc, "~> 0.19", [only: :dev, runtime: false]},
+      {:gen_stage, "~> 0.14.1"},
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
