@@ -37,7 +37,7 @@ defmodule Greedy do
   """
   def values(messages, topic) do
     messages
-    |> Enum.map(& decode_value(&1, topic))
+    |> Enum.map(&decode_value(&1, topic))
   end
 
   @doc """
