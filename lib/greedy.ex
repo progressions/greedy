@@ -37,7 +37,7 @@ defmodule Greedy do
   """
   def values(messages, topic) do
     messages
-    |> Enum.map(& decode_value(&1, topic))
+    |> Enum.map(&decode(&1, topic))
   end
 
   @doc """
@@ -47,8 +47,8 @@ defmodule Greedy do
   Once the message is encoded, the value's `metadata` field is still
   encoded as JSON, so we decode that field as well.
   """
-  def decode_value(message, topic) do
-    message.value
+  def decode(%{value: value}, topic) do
+    value
     |> parse_schema_id()
     |> parse_encoded_value(topic)
     |> parse_metadata()
@@ -63,8 +63,12 @@ defmodule Greedy do
 
   I think the ideal approach in the long run might be to get
   the ID out of this value and use that to fetch the schema.
+
+  If a message doesn't match this pattern, then we conclude it is
+  unencoded and just pass the message through.
   """
   def parse_schema_id(<<0, 0, 0, 0, id>> <> rest), do: {id, rest}
+  def parse_schema_id(value), do: {:unencoded, value}
 
   @doc """
   Parse the Avro-encoded value we get from Kafka.
@@ -80,8 +84,11 @@ defmodule Greedy do
   If those bytes haven't been removed, this function won't
   work.
   """
+  def parse_encoded_value({:unencoded, value}, _topic), do: value
+
   def parse_encoded_value({_id, value}, topic) do
-    with {:ok, value} <- AvroEx.decode(schema("#{topic}-value"), value),
+    with {:ok, schema} <- schema("#{topic}-value"),
+         {:ok, value} <- AvroEx.decode(schema, value),
          do: value
   end
 
@@ -92,12 +99,14 @@ defmodule Greedy do
     |> Map.put("metadata", metadata)
   end
 
+  def parse_metadata(value), do: value
+
   def schema(name) do
     Greedy.Schema.get(:schemas, name)
     |> parse_schema()
   end
 
   def parse_schema(%{"schema" => schema_json}) do
-    AvroEx.parse_schema!(schema_json)
+    AvroEx.parse_schema(schema_json)
   end
 end

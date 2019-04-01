@@ -15,36 +15,33 @@ defmodule Greedy.Application do
       commit_interval: 1_000
     ]
 
-    gen_consumer_impl = Greedy.Consumer
     consumer_group_name = "kafka_ex"
 
     topic_names = [
-      "fedora.user",
-      "fedora-client-secure",
-      "fedora-client",
-      "fedora.school_subscription",
-      "fedora-client.user",
-      "fedora.School",
-      "fedora.school_plan_subscription_change",
-      "fedora-client-secure.School",
-      "fedora-client.School",
-      "fedora_client.School",
-      "fedora.school"
-    ]
-
-    # I turned this off because we don't really need it right now.
-    _children = [
-      # ... other children
-      supervisor(
-        KafkaEx.ConsumerGroup,
-        [gen_consumer_impl, consumer_group_name, topic_names, consumer_group_opts]
-      )
+      "teachable.hook"
     ]
 
     children = [
+      supervisor(
+        KafkaEx.ConsumerGroup,
+        [Greedy.Consumer, consumer_group_name, topic_names, consumer_group_opts]
+      ),
       Greedy.SchemaSupervisor
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)
+  end
+
+  # this was the setup for the GenStage experiment.
+  def nuthin do
+    """
+    children = [
+      worker(A, [0]),
+      worker(B, [2]),
+      worker(C, []),
+    ]
+
+    Supervisor.start_link(children, strategy: :rest_for_one)
+    """
   end
 end
