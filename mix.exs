@@ -30,7 +30,7 @@ defmodule Greedy.MixProject do
   defp deps do
     [
       {:kafka_ex, "~> 0.9.0"},
-      {:avro_ex, "~> 0.1.0-beta.6"},
+      {:avro_ex, git: "https://github.com/usefedora/avro_ex.git"},
       {:ex_doc, "~> 0.19", [only: :dev, runtime: false]},
       {:gen_stage, "~> 0.14.1"}
       # {:dep_from_hexpm, "~> 0.3.0"},
