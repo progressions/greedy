@@ -84,7 +84,7 @@ defmodule Greedy do
   If those bytes haven't been removed, this function won't
   work.
   """
-  def parse_encoded_value({:unencoded, value}, topic), do: value
+  def parse_encoded_value({:unencoded, value}, _topic), do: value
 
   def parse_encoded_value({_id, value}, topic) do
     with {:ok, schema} <- schema("#{topic}-value"),

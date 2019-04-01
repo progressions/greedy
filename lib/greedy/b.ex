@@ -10,9 +10,10 @@ defmodule B do
   end
 
   def handle_events(events, _from, number) do
-    events = events
-             |> Greedy.messages()
-             |> Greedy.values("foo")
+    events =
+      events
+      |> Greedy.messages()
+      |> Greedy.values("foo")
 
     {:noreply, events, number}
   end

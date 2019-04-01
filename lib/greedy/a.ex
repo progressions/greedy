@@ -16,8 +16,9 @@ defmodule A do
 
     IO.inspect(%{demand: demand, counter: counter})
 
-    events = KafkaEx.fetch("foo", 0, offset: counter)
-             |> Enum.take(demand)
+    events =
+      KafkaEx.fetch("foo", 0, offset: counter, auto_commit: false)
+      |> Enum.take(demand)
 
     {:noreply, events, counter + demand}
   end
