@@ -16,11 +16,16 @@ defmodule Greedy.Consumer do
         message
         |> Greedy.decode("teachable.hook")
 
-      Task.async(fn -> Process.sleep(2_000); Logger.debug(fn -> inspect(value) end) end)
+      Task.async(fn -> Process.sleep(2_000); Logger.debug(fn -> "HOOK EVENT " <> inspect(value) end) end)
 
       Logger.debug(fn -> "value: " <> inspect(value) end)
     end
 
     {:async_commit, state}
+  end
+
+  def handle_info(msg, _state) do
+    Logger.debug("handle_info")
+    Logger.debug(fn -> inspect(msg) end)
   end
 end
