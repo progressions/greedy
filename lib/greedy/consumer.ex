@@ -2,8 +2,6 @@ defmodule Greedy.Consumer do
   @moduledoc """
   KafkaEx example consumer.
 
-  I'm not sure yet if we'd want to use this implementation, so it's turned off right now.
-
   """
   use KafkaEx.GenConsumer
 
