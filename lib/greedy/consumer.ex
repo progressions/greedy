@@ -24,8 +24,10 @@ defmodule Greedy.Consumer do
     {:async_commit, state}
   end
 
-  def handle_info(msg, _state) do
+  def handle_info(msg, state) do
     Logger.debug("handle_info")
     Logger.debug(fn -> inspect(msg) end)
+
+    {:noreply, state}
   end
 end
